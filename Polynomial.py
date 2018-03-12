@@ -2,94 +2,69 @@ import operator
 
 
 class Polynomial(object):
-    def __init__(self, coefs):
-        if not isinstance(coefs, list):
-            raise Exception("coefs must be list")
-        if len(coefs) == 0:
-            raise Exception("coefs list must not be empty")
-        for coef in coefs:
-            if not isinstance(coef, int) and not isinstance(coef, float):
-                raise Exception("coefs list should contain values of only int or float types")
-        for i, coef in enumerate(coefs):
-            if coef != 0:
-                self.degree = len(coefs) - i - 1
-                break
-            else:
-                self.degree = 1
-        self.coefs = coefs.copy()
+    def __init__(self, coeffs):
+        if not isinstance(coeffs, list):
+            raise Exception("coeffs must be list")
+        if len(coeffs) == 0:
+            raise Exception("coeffs list must not be empty")
+        if not all(isinstance(c, (int, float)) for c in coeffs):
+            raise Exception("coeffs list should contain values of only int or float types")
+        senior_degree = next((i for i, c in enumerate(coeffs) if c != 0), -1)
+        self.coeffs = coeffs[senior_degree:]
+
+    @property
+    def degree(self):
+        return len(self.coeffs) - 1
 
     def __add__(self, other):
         if isinstance(other, Polynomial):
             if self.degree > other.degree:
-                a1 = self.coefs
-                a2 = [0] * (self.degree - other.degree) + other.coefs
+                a1 = self.coeffs
+                a2 = [0] * (self.degree - other.degree) + other.coeffs
             elif other.degree > self.degree:
-                a1 = [0] * (other.degree - self.degree) + self.coefs
-                a2 = other.coefs
+                a1 = [0] * (other.degree - self.degree) + self.coeffs
+                a2 = other.coeffs
             else:
-                a1 = self.coefs
-                a2 = other.coefs
+                a1 = self.coeffs
+                a2 = other.coeffs
             return Polynomial(list(map(operator.add, a1, a2)))
         else:
-            result = Polynomial(self.coefs)
-            result.coefs[-1] += other
+            result = Polynomial(self.coeffs)
+            result.coeffs[-1] += other
             return result
 
     def __eq__(self, other):
-        return self.coefs == other.coefs
+        return self.coeffs == other.coeffs
 
     def __mul__(self, other):
         if isinstance(other, Polynomial):
-            result = Polynomial([0] * (self.degree + other.degree + 1))
-            for i, self_coef in enumerate(self.coefs):
-                for j, other_coef in enumerate(other.coefs):
-                    result.coefs[i + j] = result.coefs[i + j] + self_coef * other_coef
-            return result
-        elif isinstance(other, int) or isinstance(other, float):
-            result = Polynomial([coef * other for coef in self.coefs])
+            result = [0] * (self.degree + other.degree + 1)
+            for i, self_coef in enumerate(self.coeffs):
+                for j, other_coef in enumerate(other.coeffs):
+                    result[i + j] += self_coef * other_coef
+            return Polynomial(result)
+        elif isinstance(other, (int, float)):
+            result = Polynomial([coef * other for coef in self.coeffs])
             return result
         else:
             raise Exception("a polynomial can only be multiplied by a polynomial and int or float constant")
 
     def __str__(self):
         result = ""
-        for i, coef in enumerate(self.coefs):
+        for i, coef in enumerate(self.coeffs):
             if coef != 0:
-                if coef > 0:
-                    if self.degree == 0:
-                        result += str(coef)
+                if self.degree == 0:
+                    result += str(coef)
+                elif i == self.degree:
+                    result += "{:+}".format(coef)
+                elif i == self.degree - 1:
+                    if abs(coef) == 1:
+                        result += "+x" if coef > 0 else "-x"
                     else:
-                        if i == len(self.coefs) - 1:
-                            result += "+" + str(coef)
-                        else:
-                            if i == len(self.coefs) - 2:
-                                if coef == 1:
-                                    result += "+x"
-                                else:
-                                    result += "+" + str(coef) + "x"
-                            else:
-                                if coef == 1:
-                                    result += "+x" + str(len(self.coefs) - i - 1)
-                                else:
-                                    result += "+" + str(coef) + "x" + str(len(self.coefs) - i - 1)
+                        result += "{:+}x".format(coef)
                 else:
-                    if self.degree == 0:
-                        result += str(coef)
+                    if abs(coef) == 1:
+                        result += ("+x" if coef > 0 else "-x") + str(self.degree - i)
                     else:
-                        if i == len(self.coefs) - 1:
-                            result += str(coef)
-                        else:
-                            if i == len(self.coefs) - 2:
-                                if coef == -1:
-                                    result += "-x"
-                                else:
-                                    result += str(coef) + "x"
-                            else:
-                                if coef == -1:
-                                    result += "-x" + str(len(self.coefs) - i - 1)
-                                else:
-                                    result += str(coef) + "x" + str(len(self.coefs) - i - 1)
-        if result != "":
-            return result if result[0] != '+' else result.replace('+', '', 1)
-        else:
-            return "0"
+                        result += "{:+}x{}".format(coef, str(self.degree - i))
+        return result.lstrip("+") if result else "0"
