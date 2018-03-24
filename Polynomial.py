@@ -4,7 +4,7 @@ import operator
 class Polynomial(object):
     def __init__(self, coeffs):
         if not isinstance(coeffs, list):
-            raise Exception("coeffs must be list")
+            raise Exception("coeffs must be list or constant")
         if len(coeffs) == 0:
             raise Exception("coeffs list must not be empty")
         if not all(isinstance(c, (int, float)) for c in coeffs):
@@ -28,10 +28,12 @@ class Polynomial(object):
                 a1 = self.coeffs
                 a2 = other.coeffs
             return Polynomial(list(map(operator.add, a1, a2)))
-        else:
+        elif isinstance(other, (int, float)):
             result = Polynomial(self.coeffs)
             result.coeffs[-1] += other
             return result
+        else:
+            raise Exception("Only int or float constant can be added to the polynomial")
 
     def __eq__(self, other):
         return self.coeffs == other.coeffs

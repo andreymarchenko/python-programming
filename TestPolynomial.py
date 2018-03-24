@@ -12,6 +12,9 @@ class TestPolynomial(unittest.TestCase):
     def test_init_empty_list(self):
         self.assertRaises(Exception, Polynomial, [])
 
+    def test_init_no_list(self):
+        self.assertRaises(Exception, Polynomial, "1")
+
     def test_init_incorrect_list(self):
         self.assertRaises(Exception, Polynomial, ["1", 2])
 
@@ -47,9 +50,16 @@ class TestPolynomial(unittest.TestCase):
         self.assertEqual(p3.coeffs, [2, 4])
         self.assertEqual(p3.degree, 1)
 
-    def test_add_different_polyn_size(self):
+    def test_add_different_polyn_size_first_larger(self):
         p1 = Polynomial([1, 2, 3])
         p2 = Polynomial([1, 2])
+        p3 = p1 + p2
+        self.assertEqual(p3.coeffs, [1, 3, 5])
+        self.assertEqual(p3.degree, 2)
+
+    def test_add_different_polyn_size_second_larger(self):
+        p1 = Polynomial([1, 2])
+        p2 = Polynomial([1, 2, 3])
         p3 = p1 + p2
         self.assertEqual(p3.coeffs, [1, 3, 5])
         self.assertEqual(p3.degree, 2)
@@ -74,6 +84,10 @@ class TestPolynomial(unittest.TestCase):
         p3 = p1 + p2
         self.assertEqual(p3.coeffs, [1, 3])
         self.assertEqual(p3.degree, 1)
+
+    def test_add_incorrect_constant(self):
+        p1 = Polynomial([1, 2])
+        self.assertRaises(Exception, p1.__add__, "11")
 
     def test_add_negative_constant(self):
         p1 = Polynomial([1, 2])
@@ -118,7 +132,7 @@ class TestPolynomial(unittest.TestCase):
         self.assertEqual(p3.degree, 3)
 
     def test_mul_zero_polyns(self):
-        p1 = Polynomial([0, 0, 0])
+        p1 = Polynomial([0, 1, 0])
         p2 = Polynomial([0, 0, 0, 0, 0])
         p3 = p1 * p2
         self.assertEqual(p3.coeffs, [0])
@@ -212,6 +226,10 @@ class TestPolynomial(unittest.TestCase):
     def test_str_one_value_is_zero(self):
         p1 = Polynomial([0, 1, 0])
         self.assertEqual(str(p1), 'x')
+
+    def test_str_one_value_is_minus_zero(self):
+        p1 = Polynomial([0, -1, 0])
+        self.assertEqual(str(p1), '-x')
 
     def test_str_first_value_is_negative(self):
         p1 = Polynomial([-1, 1, 0])
