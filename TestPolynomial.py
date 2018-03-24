@@ -85,6 +85,13 @@ class TestPolynomial(unittest.TestCase):
         self.assertEqual(p3.coeffs, [0])
         self.assertEqual(p3.degree, 0)
 
+    def test_add_left_term_is_const(self):
+        p1 = 1
+        p2 = Polynomial([1, 2, 3])
+        p3 = p1 + p2
+        self.assertEqual(p3.coeffs, [1, 2, 4])
+        self.assertEqual(p3.degree, 2)
+
     def test_add_zero_values(self):
         p1 = Polynomial([1, 2, 3])
         p2 = Polynomial([0, 0])
@@ -165,6 +172,13 @@ class TestPolynomial(unittest.TestCase):
         p3 = p1 * p2
         self.assertEqual(p3.coeffs, [0])
         self.assertEqual(p3.degree, 0)
+
+    def test_mul_left_term_is_const(self):
+        p1 = 2
+        p2 = Polynomial([1, 2, 3])
+        p3 = p1 * p2
+        self.assertEqual(p3.coeffs, [2, 4, 6])
+        self.assertEqual(p3.degree, 2)
 
     def test_mul_zero_constant(self):
         p1 = Polynomial([1, 2])

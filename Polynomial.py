@@ -16,6 +16,9 @@ class Polynomial(object):
     def degree(self):
         return len(self.coeffs) - 1
 
+    def __radd__(self, other):
+        return self + other
+
     def __add__(self, other):
         if isinstance(other, Polynomial):
             if self.degree > other.degree:
@@ -58,6 +61,9 @@ class Polynomial(object):
             return result
         else:
             raise TypeError("a polynomial can only be multiplied by a polynomial and int or float constant")
+
+    def __rmul__(self, other):
+        return self * other
 
     def __str__(self):
         result = ""
