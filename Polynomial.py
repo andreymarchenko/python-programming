@@ -33,10 +33,18 @@ class Polynomial(object):
             result.coeffs[-1] += other
             return result
         else:
-            raise TypeError("Only int or float constant can be added to the polynomial")
+            raise TypeError("only int or float constant can be added to the polynomial")
 
     def __eq__(self, other):
-        return self.coeffs == other.coeffs
+        if isinstance(other, (int, float)):
+            if len(self.coeffs) == 1:
+                return self.coeffs[0] == other
+            else:
+                return False
+        elif isinstance(other, Polynomial):
+            return self.coeffs == other.coeffs
+        else:
+            raise TypeError("a polynomial can only be compared to a polynomial or constant")
 
     def __mul__(self, other):
         if isinstance(other, Polynomial):
