@@ -1,3 +1,3 @@
 # python-programming
 [![Build Status](https://travis-ci.org/andreymarchenko/python-programming.svg?branch=master)](https://travis-ci.org/andreymarchenko/python-programming)
-[![Coverage Status](https://coveralls.io/repos/github/andreymarchenko/python-programming/badge.svg?branch=master)](https://coveralls.io/github/andreymarchenko/python-programming?branch=master)
+[![codecov](https://codecov.io/gh/andreymarchenko/python-programming/branch/master/graph/badge.svg)](https://codecov.io/gh/andreymarchenko/python-programming)

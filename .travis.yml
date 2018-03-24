@@ -6,7 +6,7 @@
     - pip install codecov
   script:
     - python -m unittest TestPolynomial
-    - coverage run tests.py
+    - coverage run TestPolynomial.py
   after_success:
     - codecov
   email:
