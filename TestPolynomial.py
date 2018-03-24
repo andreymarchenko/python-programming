@@ -43,7 +43,7 @@ class TestPolynomial(unittest.TestCase):
         p2 = Polynomial([1, 2])
         self.assertFalse(p1 == p2)
 
-    def test_eq_other_is_not_polynomial(self):
+    def test_eq_other_is_constant(self):
         p1 = Polynomial([2])
         p2 = 2
         self.assertTrue(p1 == p2)
@@ -52,6 +52,10 @@ class TestPolynomial(unittest.TestCase):
         p1 = Polynomial([2, 0, 0])
         p2 = 2
         self.assertFalse(p1 == p2)
+
+    def test_eq_other_is_string(self):
+        p1 = Polynomial([2, 0, 0])
+        self.assertRaises(TypeError, p1.__eq__, "2")
 
     def test_add_same_polyn_size(self):
         p1 = Polynomial([1, 2])
