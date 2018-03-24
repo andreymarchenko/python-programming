@@ -10,13 +10,13 @@ class TestPolynomial(unittest.TestCase):
         self.assertEqual(p.degree, 2)
 
     def test_init_empty_list(self):
-        self.assertRaises(Exception, Polynomial, [])
+        self.assertRaises(TypeError, Polynomial, [])
 
     def test_init_no_list(self):
-        self.assertRaises(Exception, Polynomial, "1")
+        self.assertRaises(TypeError, Polynomial, "1")
 
     def test_init_incorrect_list(self):
-        self.assertRaises(Exception, Polynomial, ["1", 2])
+        self.assertRaises(TypeError, Polynomial, ["1", 2])
 
     def test_init_zero_values_list(self):
         p = Polynomial([0, 0, 0])
@@ -87,7 +87,7 @@ class TestPolynomial(unittest.TestCase):
 
     def test_add_incorrect_constant(self):
         p1 = Polynomial([1, 2])
-        self.assertRaises(Exception, p1.__add__, "11")
+        self.assertRaises(TypeError, p1.__add__, "11")
 
     def test_add_negative_constant(self):
         p1 = Polynomial([1, 2])
@@ -189,7 +189,7 @@ class TestPolynomial(unittest.TestCase):
 
     def test_mul_incorrect_constant(self):
         p1 = Polynomial([1, 2])
-        self.assertRaises(Exception, p1.__mul__, "5")
+        self.assertRaises(TypeError, p1.__mul__, "5")
 
     def test_str(self):
         p1 = Polynomial([2, 4])
@@ -218,6 +218,10 @@ class TestPolynomial(unittest.TestCase):
     def test_str_last_value_is_zero(self):
         p1 = Polynomial([1, 2, 0])
         self.assertEqual(str(p1), 'x2+2x')
+
+    def test_str_big_polynom(self):
+        p1 = Polynomial([1, 0, -3, -4, 5, -6, 0, 11, -24])
+        self.assertEqual(str(p1), 'x8-3x6-4x5+5x4-6x3+11x-24')
 
     def test_str_first_two_value_is_zero(self):
         p1 = Polynomial([0, 0, 1])

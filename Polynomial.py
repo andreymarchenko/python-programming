@@ -4,11 +4,11 @@ import operator
 class Polynomial(object):
     def __init__(self, coeffs):
         if not isinstance(coeffs, list):
-            raise Exception("coeffs must be list or constant")
+            raise TypeError("coeffs must be list or constant")
         if len(coeffs) == 0:
-            raise Exception("coeffs list must not be empty")
+            raise TypeError("coeffs list must not be empty")
         if not all(isinstance(c, (int, float)) for c in coeffs):
-            raise Exception("coeffs list should contain values of only int or float types")
+            raise TypeError("coeffs list should contain values of only int or float types")
         senior_degree = next((i for i, c in enumerate(coeffs) if c != 0), -1)
         self.coeffs = coeffs[senior_degree:]
 
@@ -33,7 +33,7 @@ class Polynomial(object):
             result.coeffs[-1] += other
             return result
         else:
-            raise Exception("Only int or float constant can be added to the polynomial")
+            raise TypeError("Only int or float constant can be added to the polynomial")
 
     def __eq__(self, other):
         return self.coeffs == other.coeffs
@@ -49,7 +49,7 @@ class Polynomial(object):
             result = Polynomial([coef * other for coef in self.coeffs])
             return result
         else:
-            raise Exception("a polynomial can only be multiplied by a polynomial and int or float constant")
+            raise TypeError("a polynomial can only be multiplied by a polynomial and int or float constant")
 
     def __str__(self):
         result = ""
